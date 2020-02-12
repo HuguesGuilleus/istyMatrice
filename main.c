@@ -3,11 +3,12 @@
 #include "main.h"
 
 int main(int argc, char const *argv[]) {
-	matrix m;
-
-	matrix_alloc(20, 10, &m);
-	matrix_print(&m);
-	matrix_free(&m);
+	matrix *m = matrix_scan();
+	printf("\n");
+	matrix_print(m);
+	matrix_free(m);
+	free(m);
+	m = NULL;
 
 	return 0;
 }

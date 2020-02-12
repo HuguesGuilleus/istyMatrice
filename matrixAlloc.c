@@ -7,7 +7,13 @@
 // Créé une nouvelle matrix et règle les valeurs à zéro.
 matrix *matrix_new(int w, int h) {
 	int i, j;
-	matrix *m = (matrix *)malloc(sizeof(matrix));
+	matrix *m = NULL;
+
+	if (w == 0 || h == 0) {
+		return NULL;
+	}
+
+	m = (matrix *)malloc(sizeof(matrix));
 	*m = (matrix){
 		w : w,
 		h : h,
@@ -58,4 +64,40 @@ void matrix_fprint(FILE *file, matrix *m) {
 		}
 		printf("\n");
 	}
+}
+
+/* SAISIT */
+
+// Saisit une matrice depuis le fichier in. Si le fichier est NULL, alors la
+// fonction renvoie un tableau vide.
+matrix *matrix_fscan(FILE *in) {
+	matrix *m = NULL;
+	int w, h;
+	int maxW, maxH;
+	char _;
+
+	if (in == NULL)
+		return NULL;
+
+	if (fscanf(in, "%d%c%d", &maxW, &_, &maxH) != 3)
+		return NULL;
+	m = matrix_new(maxW, maxH);
+
+	for (h = 0; h < maxH; h++) {
+		for (w = 0; w < maxW; w++) {
+			if (fscanf(in, " %f", &(m->tab[w][h])) != 1) {
+				return m;
+			}
+		}
+	}
+	return m;
+}
+
+// Saisit une matrice depuis l'entré standard.
+matrix *matrix_scan(void) {
+	matrix *m = NULL;
+	while ((m = matrix_fscan(stdin)) == NULL) {
+		printf("Saisit invalide\n");
+	}
+	return m;
 }

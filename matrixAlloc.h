@@ -18,5 +18,7 @@ void matrix_alloc(int w, int h, matrix *m);
 void matrix_free(matrix *m);
 void matrix_fprint(FILE* file, matrix*m);
 void matrix_print(matrix *m);
+matrix *matrix_fscan(FILE *in);
+matrix *matrix_scan(void);
 
 #endif
