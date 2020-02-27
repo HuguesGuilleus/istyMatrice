@@ -5,6 +5,11 @@
 OPT_COMPILATION="-Wall -fdiagnostics-color=always"
 OPT_ASSEMBLAGE=""
 
+# Use clang-format to format some files.
+function cf() {
+	clang-format -assume-filename=~/.clang-format -i $*
+} &>/dev/null
+
 clear
 if [[ $# -ge 1 ]]; then
 	case $1 in
@@ -36,8 +41,7 @@ do
 		|| $progObjet -ot $progLib
 	]]
 	then
-		which clang-format &>/dev/null && clang-format \
-			-assume-filename=~/.clang-format -i $progPath
+		cf $progPath $progLib
 		gcc $OPT_COMPILATION -c $progPath -o $progObjet &>.log
 		if [[ $? == 0 ]]; then
 			echo -e "\e[32m OK\033[0m"
