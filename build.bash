@@ -2,7 +2,7 @@
 
 # 2019,2020 GUILLEUS Hugues IATIC3 <hugues.guilleus@ens.uvsq.fr>
 
-OPT_COMPILATION="-Wall"
+OPT_COMPILATION="-Wall -fdiagnostics-color=always"
 OPT_ASSEMBLAGE=""
 
 clear
@@ -38,7 +38,6 @@ do
 	then
 		which clang-format &>/dev/null && clang-format \
 			-assume-filename=~/.clang-format -i $progPath
-		# SYSTEMD_COLORS=1 
 		gcc $OPT_COMPILATION -c $progPath -o $progObjet &>.log
 		if [[ $? == 0 ]]; then
 			echo -e "\e[32m OK\033[0m"
