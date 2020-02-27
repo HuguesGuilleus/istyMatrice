@@ -3,12 +3,14 @@
 #include "main.h"
 
 int main(int argc, char const *argv[]) {
-	matrix *m = matrix_scan();
-	printf("\n");
-	matrix_print(m);
-	matrix_free(m);
-	free(m);
-	m = NULL;
+	float **tab = NULL;
+	int w, h;
+
+	bool e = tab2d_scan(&tab, &w, &h, stdin);
+
+	printf("\nRetourn de tab2d_scan(): %d\n", e);
+
+	tab2d_print(tab, w, h);
 
 	return 0;
 }
