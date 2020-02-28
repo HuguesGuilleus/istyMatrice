@@ -3,14 +3,18 @@
 #include "main.h"
 
 int main(int argc, char const *argv[]) {
-	float **tab = NULL;
-	int w, h;
+	t_matrix *m1 = NULL, *m2 = NULL;
 
-	bool e = tab2d_scan(&tab, &w, &h, stdin);
+	TRACE("matrice 1 :::");
+	m1 = matrix_scan();
+	TRACE("matrice 2 :::");
+	m2 = matrix_scan();
 
-	printf("\nRetourn de tab2d_scan(): %d\n", e);
+	TRACE("Affichage ...");
 
-	tab2d_print(tab, w, h);
+	matrix_print(matrix_Mult(m1, m2));
+
+	TRACE("Fin affichage");
 
 	return 0;
 }
