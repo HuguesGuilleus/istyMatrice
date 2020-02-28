@@ -14,9 +14,11 @@ typedef struct {
 
 t_matrix *matrix_new(int w, int h);
 void matrix_free(t_matrix *m);
-void matrix_print(t_matrix *m);
-t_matrix *matrix_scan(void);
-t_matrix *matrix_Mult(t_matrix *m1, t_matrix *m2);
+bool matrix_printToFileName(t_matrix *m, char *fileName);
+void matrix_print(t_matrix *m, FILE *file);
+t_matrix *matrix_scan(FILE *file);
+t_matrix *matrix_scanFromFile(char *fileName);
+t_matrix *matrix_mult(t_matrix *m1, t_matrix *m2);
 bool matrix_multCheck(t_matrix *m1, t_matrix *m2);
 
 #endif

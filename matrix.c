@@ -4,7 +4,7 @@
 
 /* MÉMOIRE */
 
-// Alloue une nouvelle matrice qui sera renvoyé.
+// Alloue une nouvelle matrice qui sera renvoyée.
 t_matrix *matrix_new(int w, int h) {
 	t_matrix *m = NULL;
 	if (w < 1 || h < 1) {
@@ -37,30 +37,84 @@ void matrix_free(t_matrix *m) {
 
 /* AFFICHAGE */
 
-void matrix_print(t_matrix *m) {
-	if (m == NULL || m->w <= 0 || m->h <= 0) {
-		printf("(t_matrix) emty\n");
+// Affiche la matrice dans un fichier. En cas d'erreur la fonction renvera TRUE.
+bool matrix_printToFileName(t_matrix *m, char *fileName) {
+	FILE *file = NULL;
+
+	if (fileName == NULL) {
+		TRACE("matrix_printToFileName() fileName is empty");
+		return TRUE;
+	}
+
+	file = fopen(fileName, "w");
+	if (file == NULL) {
+		return TRUE;
+	}
+	matrix_print(m, file);
+	fclose(file);
+
+	return FALSE;
+}
+
+void matrix_print(t_matrix *m, FILE *file) {
+	if (file == NULL) {
+		TRACE("matrix_print() file is null.");
 		return;
 	}
 
-	printf("(t_matrix) %dx%d\n", m->w, m->h);
-	tab2d_print(m->t, m->w, m->h);
+	if (m == NULL || m->t == NULL || m->w <= 0 || m->h <= 0) {
+		fprintf(file, "(t_matrix) empty\n");
+		return;
+	}
+
+	fprintf(file, "(t_matrix) %dx%d\n", m->w, m->h);
+	tab2d_printFile(m->t, m->w, m->h, file);
 }
 
 /* SAISIT */
 
-t_matrix *matrix_scan(void) {
+t_matrix *matrix_scanFromFile(char *fileName) {
+	FILE *file = NULL;
+	t_matrix *m = NULL;
+
+	if (fileName == NULL) {
+		TRACE("matrix_scanFromFile() fileName is NULL");
+		return NULL;
+	}
+
+	file = fopen(fileName, "r");
+	if (file == NULL) {
+		return NULL;
+	}
+
+	m = matrix_scan(file);
+
+	fclose(file);
+
+	return m;
+}
+
+t_matrix *matrix_scan(FILE *file) {
 	t_matrix *m;
 
+	if (file == NULL) {
+		TRACE("matrix_scan() need a non empty file.");
+		return NULL;
+	}
+
 	m = (t_matrix *)malloc(sizeof(t_matrix));
-	tab2d_scan(&m->t, &m->w, &m->h, stdin);
+	*m = (t_matrix){};
+	if (tab2d_scan(&m->t, &m->w, &m->h, file)) {
+		free(m);
+		return NULL;
+	}
 
 	return m;
 }
 
 /* OPÉRATION */
 
-t_matrix *matrix_Mult(t_matrix *m1, t_matrix *m2) {
+t_matrix *matrix_mult(t_matrix *m1, t_matrix *m2) {
 	t_matrix *res = NULL;
 	int x, y, i;
 

@@ -54,26 +54,54 @@ void tab2d_free(float **tab, int width) {
 
 /* AFFICHAGE ET SAISIT */
 
-// Affiche le tableau dans la console.
-void tab2d_print(float **tab, int width, int height) {
+// Affiche le tableau dans un fichier.
+void tab2d_printFile(float **tab, int width, int height, FILE *file) {
 	int x, y;
 
+	if (file == NULL) {
+		TRACE("tab2d_printFile() file is NULL.");
+		return;
+	}
+
 	if (width < 0 || height < 0) {
-		printf("(float[]) ???\n");
+		fprintf(file, "(float[]) ???\n");
 		return;
 	}
 
 	if (tab == NULL || width == 0 || height == 0) {
-		printf("(float[]) null\n");
+		fprintf(file, "(float[]) null\n");
 		return;
 	}
 
 	for (y = 0; y < height; y++) {
 		for (x = 0; x < width; x++) {
-			printf("%15.5f ", tab[x][y]);
+			fprintf(file, "%15.5f ", tab[x][y]);
 		}
-		printf("\n");
+		fprintf(file, "\n");
 	}
+}
+
+// Affiche le tableau dans la console.
+void tab2d_print(float **tab, int width, int height) {
+	tab2d_printFile(tab, width, height, stdout);
+	// int x, y;
+	//
+	// if (width < 0 || height < 0) {
+	// 	printf("(float[]) ???\n");
+	// 	return;
+	// }
+	//
+	// if (tab == NULL || width == 0 || height == 0) {
+	// 	printf("(float[]) null\n");
+	// 	return;
+	// }
+	//
+	// for (y = 0; y < height; y++) {
+	// 	for (x = 0; x < width; x++) {
+	// 		printf("%15.5f ", tab[x][y]);
+	// 	}
+	// 	printf("\n");
+	// }
 }
 
 // Saisit la taille et les coeficients d'un tableau. Renvoie TRUE en cas
